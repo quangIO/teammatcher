@@ -72,7 +72,7 @@
       },
       deleteUser() {
         this.$vs.loading();
-        Vue.axios.delete(this.API_URL + '/me', {data: {'email': this.email}}, {withCredentials: true}).then((res) => {
+        Vue.axios.post(this.API_URL + '/delete', {'email': this.email}, {withCredentials: true}).then((res) => {
           this.$vs.notify({
             title: 'I deleted your account',
             text: 'Thank you for using this product',
