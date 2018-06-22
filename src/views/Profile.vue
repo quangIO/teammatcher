@@ -56,7 +56,6 @@
           'intro': this.intro,
           'wantTeam': this.wantTeam
         }, {withCredentials: true}).then((res) => {
-          this.$vs.loading.close();
           if (res.data['code'] === 200) {
             this.$vs.notify({title: 'Update succeeded', text: 'Thanks', color: 'success'});
           } else {
@@ -67,6 +66,8 @@
               icon: 'error'
             })
           }
+        }).finally(() => {
+          this.$vs.loading.close();
         });
       },
       deleteUser() {
@@ -78,10 +79,11 @@
             color: 'dark',
             icon: 'done'
           });
-          this.$vs.loading.close();
           setTimeout(() => {
             window.location.href = 'https://shecodes.tech';
           }, 3000);
+        }).finally(() => {
+          this.$vs.loading.close();
         });
       }
     },
