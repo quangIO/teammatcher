@@ -11,6 +11,9 @@
         <team :likedBack="likedBacks[col['id']]" :liked="likedTeams[col['id']]" :team-id="col['id']" :users="col['members']"></team>
       </vs-col>
     </vs-row>
+    <vs-button vs-color="success" vs-type="gradient" vs-icon="done">
+      Đồng ý
+    </vs-button>
   </div>
 </template>
 <style>
