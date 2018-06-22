@@ -12,15 +12,27 @@
     </vs-row>
     <vs-row vs-w="12" vs-type="flex" vs-justify="center" vs-align="center">
       <vs-col vs-sm="10" vs-lg="10" vs-xs="12">
-        <vs-input v-tooltip="'Hãy cho mọi người biết kĩ năng và phong cách làm việc của bạn'" vs-label-placeholder="Mình là người..." v-model="intro"/>
+        <vs-input v-tooltip="'Hãy cho mọi người biết kĩ năng và phong cách làm việc của bạn'"
+                  vs-label-placeholder="Mình là người..." v-model="intro"/>
       </vs-col>
     </vs-row>
     <vs-row vs-w="12" vs-type="flex" vs-justify="center" vs-align="center">
       <vs-col vs-sm="10" vs-lg="10" vs-xs="12">
-        <vs-input v-tooltip="'Bạn thích làm việc formally hay informally, bạn có muốn làm việc với nhưng người có mindset hay skills khác mình?'" vs-label-placeholder="Đang tìm người..." v-model="wantTeam"/>
+        <vs-input
+            v-tooltip="'Bạn thích làm việc 100% nghiêm túc hay môi trường vui vẻ, bạn có muốn làm với nhưng người có mindset hay skills khác mình?'"
+            vs-label-placeholder="Đang tìm người..." v-model="wantTeam"/>
       </vs-col>
     </vs-row>
     <vs-button @click="submitForm">Submit</vs-button>
+    <vs-divider vs-color="danger">Danger</vs-divider>
+
+    <vs-button @click="activePrompt = true" vs-color="danger" vs-type="border">Delete</vs-button>
+    <vs-dialog @vs-cancel="email=''" vs-type="prompt" @vs-accept="deleteUser" :vs-active.sync="activePrompt">
+      We will delete your account from database
+      <div slot="input">
+        <vs-input vs-placeholder="Email" v-model="email"/>
+      </div>
+    </vs-dialog>
   </div>
 </template>
 
@@ -32,7 +44,8 @@
         name: "",
         email: "",
         intro: "",
-        wantTeam: ""
+        wantTeam: "",
+        activePrompt: false
       };
     },
     methods: {
@@ -54,6 +67,21 @@
               icon: 'error'
             })
           }
+        });
+      },
+      deleteUser() {
+        this.$vs.loading();
+        Vue.axios.delete(this.API_URL + '/me', {data: {'email': this.email}}, {withCredentials: true}).then((res) => {
+          this.$vs.notify({
+            title: 'I deleted your account',
+            text: 'Thank you for using this product',
+            color: 'dark',
+            icon: 'done'
+          });
+          this.$vs.loading.close();
+          setTimeout(() => {
+            window.location.href = 'https://shecodes.tech';
+          }, 3000);
         });
       }
     },
