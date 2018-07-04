@@ -50,6 +50,9 @@
           }
           this.$eventHub.$emit("liked");
           this.$vs.loading.close();
+        }).catch((error) => {
+          this.$vs.notify({title:'I am broken :(. Did you login?',text: error.toString(), color:'danger',icon:'error'});
+          this.$vs.loading.close();
         });
       }
     }
