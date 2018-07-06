@@ -11,6 +11,14 @@
     <br/>
     <br/>
     <router-view/>
+    <vs-dialog
+        vs-color="dark"
+        vs-title="Login first"
+        @vs-accept="toFacebook"
+        :vs-active.sync="activeAlert">
+      <!-- Text in Alert -->
+      Please login with Facebook to continue
+    </vs-dialog>
   </div>
 </template>
 
@@ -18,7 +26,8 @@
   export default {
     data() {
       return {
-        me: null
+        me: null,
+        activeAlert: true
       }
     },
     methods: {
@@ -31,6 +40,7 @@
       Vue.axios.get(this.API_URL + '/me', {withCredentials: true}).then((res) => {
         if (res.data['code'] === 200) {
           this.me = res.data['message'];
+          this.activeAlert = false;
         } else {
           this.$vs.notify({title:'Please login to continue',text:'You are not logged in',color:'danger',icon:'error'});
         }
